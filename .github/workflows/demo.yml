@@ -2,7 +2,7 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-  Example-Matrix:
+  OPEN_RUNTIMES:
     strategy:
         matrix:
           runtimes: [node-19.0.js, node-19.0.mjs, node-18.0.js, node-18.0.mjs]
@@ -16,10 +16,41 @@ jobs:
               TEST_SCRIPT: tests.sh
               OPEN_RUNTIMES_BUILD_COMMAND: npm install
               OPEN_RUNTIMES_START_COMMAND: pm2 start src/server.js --no-daemon
+            - runtimes: node-19.0.mjs
+              RUNTIME: node-19.0
+              TEST_CLASS: Base
+              ENTRYPOINT: tests.mjs
+              IMAGE: openruntimes/node:${VERSION}-19.0
+              ARCH: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+              TEST_SCRIPT: tests.sh
+              OPEN_RUNTIMES_BUILD_COMMAND: npm install
+              OPEN_RUNTIMES_START_COMMAND: pm2 start src/server.mjs --no-daemon
+            - runtimes: node-18.0.js
+              RUNTIME: node-18.0
+              TEST_CLASS: Base
+              ENTRYPOINT: tests.js
+              IMAGE: openruntimes/node:${VERSION}-18.0
+              ARCH: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+              TEST_SCRIPT: tests.sh
+              OPEN_RUNTIMES_BUILD_COMMAND: npm install
+              OPEN_RUNTIMES_START_COMMAND: pm2 start src/server.js --no-daemon
+            - runtimes: node-18.0.mjs
+              RUNTIME: node-18.0
+              TEST_CLASS: Base
+              ENTRYPOINT: tests.mjs
+              IMAGE: openruntimes/node:${VERSION}-18.0
+              ARCH: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+              TEST_SCRIPT: tests.sh
+              OPEN_RUNTIMES_BUILD_COMMAND: npm install
+              OPEN_RUNTIMES_START_COMMAND: pm2 start src/server.mjs --no-daemon
+
     runs-on: ubuntu-20.04
     steps: 
+        - name: Clone Repository
+          uses: actions/checkout@v2
         - name: Print Script
-          run: |
-           echo "Runtime: ${{ matrix.RUNTIME }} Test_class: ${{ matrix.TEST_CLASS }} Entrypoint: ${{ matrix.ENTRYPOINT }} Image: ${{ matrix.IMAGE }} Arch: ${{ matrix.ARCH }} Test_script: ${{ matrix.TEST_SCRIPT }} Open_runtimes_build_command: ${{ matrix.OPEN_RUNTIMES_BUILD_COMMAND }} Open_runtimes_start_command: ${{ matrix.OPEN_RUNTIMES_START_COMMAND }}"
+          run : |
+           ENTRYPOINT=${{ matrix.ENTRYPOINT }} TEST_CLASS=${{ matrix.TEST_CLASS }} OPEN_RUNTIMES_BUILD_COMMAND=${{ matrix.OPEN_RUNTIMES_BUILD_COMMAND }} OPEN_RUNTIMES_START_COMMAND=${{ matrix.OPEN_RUNTIMES_START_COMMAND }} bash ./test.sh
+        
 
             
