@@ -50,7 +50,7 @@ jobs:
           uses: actions/checkout@v2
         - name: Print Script
           run : |
-           ENTRYPOINT=${{ matrix.ENTRYPOINT }} TEST_CLASS=${{ matrix.TEST_CLASS }} OPEN_RUNTIMES_BUILD_COMMAND=${{ matrix.OPEN_RUNTIMES_BUILD_COMMAND }} OPEN_RUNTIMES_START_COMMAND=${{ matrix.OPEN_RUNTIMES_START_COMMAND }} bash ./test.sh
+           ENTRYPOINT="${{ matrix.ENTRYPOINT }}" TEST_CLASS="${{ matrix.TEST_CLASS }}" OPEN_RUNTIMES_BUILD_COMMAND="${{ matrix.OPEN_RUNTIMES_BUILD_COMMAND }}" OPEN_RUNTIMES_START_COMMAND="${{ matrix.OPEN_RUNTIMES_START_COMMAND }}" bash ./test.sh
         
 
             
