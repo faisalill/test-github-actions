@@ -2,17 +2,24 @@ name: GitHub Actions Demo
 run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Example-Matrix:
+    strategy:
+        matrix:
+          runtimes: [node-19.0.js, node-19.0.mjs, node-18.0.js, node-18.0.mjs]
+          include:
+            - runtimes: node-19.0.js
+              RUNTIME: node-19.0
+              TEST_CLASS: Base
+              ENTRYPOINT: tests.js
+              IMAGE: openruntimes/node:${VERSION}-19.0
+              ARCH: linux/amd64,linux/arm/v6,linux/arm/v7,linux/arm64
+              TEST_SCRIPT: tests.sh
+              OPEN_RUNTIMES_BUILD_COMMAND: npm install
+              OPEN_RUNTIMES_START_COMMAND: pm2 start src/server.js --no-daemon
     runs-on: ubuntu-20.04
-    steps:
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+    steps: 
+        - name: Print Script
+          run: |
+           echo "Runtime: ${{ matrix.RUNTIME }} Test_class: ${{ matrix.TEST_CLASS }} Entrypoint: ${{ matrix.ENTRYPOINT }} Image: ${{ matrix.IMAGE }} Arch: ${{ matrix.ARCH }} Test_script: ${{ matrix.TEST_SCRIPT }} Open_runtimes_build_command: ${{ matrix.OPEN_RUNTIMES_BUILD_COMMAND }} Open_runtimes_start_command: ${{ matrix.OPEN_RUNTIMES_START_COMMAND }}"
+
+            
