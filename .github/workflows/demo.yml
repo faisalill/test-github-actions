@@ -45,6 +45,7 @@ jobs:
               OPEN_RUNTIMES_START_COMMAND: "pm2 start src/server.mjs --no-daemon"
 
     runs-on: ubuntu-20.04
+    name: ${{ matrix.RUNTIME }} Test
     steps: 
         - name: Clone Repository
           uses: actions/checkout@v2
